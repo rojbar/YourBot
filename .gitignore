@@ -1,0 +1,6 @@
+
+# .temp files are ignored
+*.db
+*.temp
+node_modules
+
