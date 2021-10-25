@@ -1,6 +1,6 @@
 # YourBot
 Discord bot that has:
-- Manga R
+- Manga Reader
 - Music
 - Chess
 # Deployment
