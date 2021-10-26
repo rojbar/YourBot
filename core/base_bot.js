@@ -8,6 +8,7 @@ const path = require('path');
  * @property {string} prefix the prefix for the bot commands
  * @property {string} token the token of the bot for login
  * @property {Discord.Collection} commands a collection of all bot commands
+ * @extends Discord.Client
  */
 class Base_Bot extends Discord.Client {
     
