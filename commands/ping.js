@@ -3,7 +3,7 @@ const Command  = require('../core/command.js');
 const ping = new Command();
 
 ping.data.setName('ping')
-ping.data.setDescription('Soon we will send you your ping in ms!');
+ping.data.setDescription('your ping in ms!');
 
 ping.execute = async (interaction) =>{
 
