@@ -1,4 +1,4 @@
-const SubCommand = require('../../../core/subcommand');
+const SubCommand = require('../../../core/subcommand.js');
 
 const clear = new SubCommand();
 clear.data.setName('clear');

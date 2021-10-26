@@ -1,4 +1,4 @@
-const SubCommand = require('../../../core/subcommand');
+const SubCommand = require('../../../core/subcommand.js');
 
 const show = new SubCommand();
 show.data.setName('show');

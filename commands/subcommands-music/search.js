@@ -1,4 +1,4 @@
-const SubCommand = require('../../core/subcommand');
+const SubCommand = require('../../core/subcommand.js');
 
 const search = new SubCommand();
 search.data.setName('search');
