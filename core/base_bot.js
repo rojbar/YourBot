@@ -1,24 +1,21 @@
 const Discord = require('discord.js');
 const fs = require('fs');
 const path = require('path');
+
+
 /**
- * This class represents a basic bot, it allows to manage it (start, stop, restart and suspend), it also allows to 
- * dynamically load commands and modules, it extends Discord.Client class.
+ * This class represents a basic bot, it loads all its commands, events and logins it with a token
  * @property {string} prefix the prefix for the bot commands
  * @property {string} token the token of the bot for login
  * @property {Discord.Collection} commands a collection of all bot commands
- * @property {Discord.Collection} modules a collection of all bot modules
- * @property {Discord.Collection} cooldowns a collection of all cooldowns
- * @property {Discord.Collection} modulesBeingUsed a collection of modules being used
  */
 class Base_Bot extends Discord.Client {
     
 	/**
-     * The bot requires two arguments and has a third argument by default.
 	 * @constructs
      * @param {string} prefix the prefix for the bot commands
      * @param {string} token the token of the bot for login
-	 * @param {Discord.Intents} intents the options passed to the bot
+	 * @param {Discord.Intents} intents the options passed to the bot, is Intents.FLAGS.GUILDS by default
      */
 	constructor(prefix,token, intents = {intents: [Discord.Intents.FLAGS.GUILDS]}){
 		super(intents);
@@ -28,9 +25,8 @@ class Base_Bot extends Discord.Client {
 	}
 
 	/**
-     * This method starts the bot:
-     *  1. It defines the behaviour for the event on 'message'
-     *  2. It defines the behaviour for the event once 'ready'
+     *  1. It loads all the commands
+     *  2. It loads all the events
      *  3. It logins with the token
      */
 	start()
@@ -41,7 +37,7 @@ class Base_Bot extends Discord.Client {
 	}
 
 	/**
-     *  loads commands into the commands client collection
+     *  loads commands into the commands.collection of the bot
      */
 	loadCommands()
 	{
@@ -52,6 +48,7 @@ class Base_Bot extends Discord.Client {
 			const command = require(`${dirpath}/${file}`);
 			this.commands.set(command.data.name, command);
 		}
+
 		console.log("Loaded commands!");
 
 	}

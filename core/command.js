@@ -5,12 +5,16 @@ const path = require('path');
 
 
 /**
- * A Command is an object with a data value that specifies its json structure, a subgroups() that is a collection of command collections under a key
- * a subcommands() collection that doesnt belong to any subgroup. An an execute method that recieves the interaction , an another function that defines
- * behaviour in case the command doesnt have subcommands
+ * A Command is an SlashCommand.
+ * @property {SlashCommandBuilder} data the data of the command for register
+ * @property {Discord.Collection} subGroups all the subgroups of the command. Each soubgroup contains a collection of subcommands
+ * @property {Discord.Collection} subCommands all the subcommands that are not part of a subgroup
  */
 class Command {
 
+    /**
+     * @constructs
+     */
     constructor()
     {
         this.data = new SlashCommandBuilder();
@@ -18,6 +22,10 @@ class Command {
         this.subCommands = new Discord.Collection();
     }
 
+    /**
+     * The execute method is configure by deault to execute a subcommand of a command, either by being a single subcommand or one from a subgroup
+     * @param {Discord.Interaction} interaction the user interaction 
+     */
     async execute(interaction)
     {
         
@@ -46,6 +54,10 @@ class Command {
         }    
     }
 
+    /**
+     * Loads all the subgroups of a command, and each subcommand that is in a subgroup saving them in the subGroups collection.
+     * It also loads all the metadat of the soubgroups and saves it in the data property of the command.
+     */
     loadSubGroups()
     {
         const dirpath = path.join(__dirname,`../commands/subcommands-${this.data.name}`);
@@ -77,6 +89,10 @@ class Command {
 
     }
 
+    /**
+     * Loads all the direct subcommands of a command (those who are not part of a subgroup).
+     * It also loads all of the subcommands metadata and saves it in the data property of the command.
+     */
     loadSubcommands()
     {
         const dirpath = path.join(__dirname,`../commands/subcommands-${this.data.name}`);
