@@ -5,4 +5,6 @@ Discord bot that has:
 - Chess
 # Deployment
 Is required a config.json file that has the { token:, prefix:, guildId:, clientId}
+# Docs
+jsdoc -c conf.json
 
