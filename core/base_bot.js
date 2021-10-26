@@ -1,6 +1,6 @@
 const Discord = require('discord.js');
 const fs = require('fs');
-
+const path = require('path');
 /**
  * This class represents a basic bot, it allows to manage it (start, stop, restart and suspend), it also allows to 
  * dynamically load commands and modules, it extends Discord.Client class.
@@ -45,10 +45,11 @@ class Base_Bot extends Discord.Client {
      */
 	loadCommands()
 	{
-		const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+		const dirpath = path.resolve('./commands');
+		const commandFiles = fs.readdirSync(dirpath).filter(file => file.endsWith('.js'));
 
 		for (const file of commandFiles) {
-			const command = require(`.././commands/${file}`);
+			const command = require(`${dirpath}/${file}`);
 			this.commands.set(command.data.name, command);
 		}
 		console.log("Loaded commands!");
@@ -60,11 +61,12 @@ class Base_Bot extends Discord.Client {
 	 */
 	loadEvents()
 	{
-		const eventFiles = fs.readdirSync('./events').filter(file => file.endsWith('.js'));
+		const dirpath = path.resolve('./events');
+		const eventFiles = fs.readdirSync(dirpath).filter(file => file.endsWith('.js'));
 
 		for (const file of eventFiles) {
 
-			const event = require(`.././events/${file}`);
+			const event = require(`${dirpath}/${file}`);
 			
 			if (event.once)
 			{
