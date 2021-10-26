@@ -5,8 +5,7 @@ const music = new Command();
 music.data.setName('music')
 music.data.setDescription('Soon we will send you your music!');
 
-music.execute = async (interaction) =>{
-	await interaction.reply('We are working on it!');
-};
+music.loadSubcommands();
+music.loadSubGroups();
 
 module.exports = music;

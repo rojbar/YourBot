@@ -1,8 +1,8 @@
 const SubCommand = require('../../core/subcommand');
 
 const play = new SubCommand();
-play.data.setName('search');
-play.data.setDescription('Search a song!');
+play.data.setName('play');
+play.data.setDescription('play a song!');
 play.data.addStringOption(
     option => 
         option.setName('name')
