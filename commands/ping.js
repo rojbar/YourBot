@@ -6,7 +6,10 @@ ping.data.setName('ping')
 ping.data.setDescription('Soon we will send you your ping in ms!');
 
 ping.execute = async (interaction) =>{
-	await interaction.reply('We are working on it!');
+
+	const sent = await interaction.reply({ content: 'Pinging...', fetchReply: true });
+	interaction.editReply(`Roundtrip latency: ${sent.createdTimestamp - interaction.createdTimestamp}ms`);
+
 };
 
 module.exports = ping;
