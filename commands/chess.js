@@ -1,10 +1,12 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const Command  = require('../core/command.js');
 
-module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('chess')
-		.setDescription('Replies with chess!'),
-	async execute(interaction) {
-		await interaction.reply('chess!');
-	},
+const chess = new Command();
+
+chess.data.setName('chess');
+chess.data.setDescription('A chess module that allows you to play with friends privately or in public!');
+
+chess.execute = async (interaction) =>{
+	await interaction.reply('We are working on it!');
 };
+
+module.exports = chess;

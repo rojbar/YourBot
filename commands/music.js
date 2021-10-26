@@ -1,10 +1,12 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const Command  = require('../core/command.js');
 
-module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('music')
-		.setDescription('music'),
-	async execute(interaction) {
-		await interaction.reply('music');
-	},
+const music = new Command();
+
+music.data.setName('music')
+music.data.setDescription('Soon we will send you your music!');
+
+music.execute = async (interaction) =>{
+	await interaction.reply('We are working on it!');
 };
+
+module.exports = music;

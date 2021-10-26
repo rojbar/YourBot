@@ -1,10 +1,12 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const Command  = require('../core/command.js');
 
-module.exports = {
-	data: new SlashCommandBuilder()
-		.setName('help')
-		.setDescription('we should add a website link that is send to the user!'),
-	async execute(interaction) {
-		await interaction.reply('help!');
-	},
+const help = new Command();
+
+help.data.setName('help')
+help.data.setDescription('Soon we will send you a link to our commands guide!');
+
+help.execute = async (interaction) =>{
+	await interaction.reply('We are working on it!');
 };
+
+module.exports = help;

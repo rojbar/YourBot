@@ -1,8 +1,4 @@
-const Module = require('../core/module.js');
-const fs = require('fs');
-const Discord = require('discord.js');
-const Util = require('../core/util.js');
-const {prefix} = require('../config.json');
+
 const manga_manager = require('../databases/manga/seeders/manga_manager');
 
 
