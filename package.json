@@ -10,7 +10,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "register-commands":"node ./scripts/deploy-commands.js $npm_config_global"
+    "register-commands": "node ./scripts/deploy-commands.js $npm_config_global"
   },
   "author": "rojbar",
   "license": "ISC",
@@ -20,6 +20,7 @@
     "@discordjs/voice": "^0.6.0",
     "discord-api-types": "^0.24.0",
     "discord.js": "^13.2.0",
+    "dotenv": "^10.0.0",
     "sequelize": "^6.8.0",
     "sqlite3": "^5.0.2"
   },
