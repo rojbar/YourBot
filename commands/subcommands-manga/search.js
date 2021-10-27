@@ -1,7 +1,7 @@
 const SubCommand = require('../../core/subcommand.js');
 const { sourceModel,enviromentModel, libraryModel, mangaModel} = require('../../databases/manga/seeders/manga_manager.js');
 const { MessageEmbed } = require('discord.js');
-const enviroment = require('./helpers/enviroment.js');
+const env = require('./helpers/enviroment.js');
 
 
 const search = new SubCommand();
@@ -9,14 +9,14 @@ search.data.setName('search');
 search.data.setDescription('searches a manga with the default source');
 search.data.addStringOption(      
     option => 
-        option.setName('manga_id')
+        option.setName('name')
           .setDescription('The name of the manga')
           .setRequired(true)
 );
 
 search.execute = async interaction =>{
 
-    await enviroment(interaction.user.id);
+    await env(interaction.user.id);
 
     const enviroment = await enviromentModel.findByPk(interaction.user.id);
     const default_source = await sourceModel.findByPk(enviroment.default_source);
@@ -26,7 +26,7 @@ search.execute = async interaction =>{
     {
         const sourceScraper = interaction.client.commands.get(interaction.commandName).sources.get(default_source.name);
 
-        const resultados = await sourceScraper.search(sourceScraper.getSearchUrl().concat(interaction.options.getString('manga_id')));
+        const resultados = await sourceScraper.search(sourceScraper.getSearchUrl().concat(interaction.options.getString('name')));
 
         const reply = new MessageEmbed().setTitle('Search Results:');
         resultados.forEach( function(element, index){
