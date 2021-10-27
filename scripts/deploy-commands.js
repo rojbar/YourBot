@@ -4,6 +4,7 @@ const { clientId, guildId, token } = require('../config.json');
 const fs = require('fs');
 const path = require('path');
 
+let  myArgs = process.argv.slice(2);
 const commands = [];
 const dirpath = path.join(__dirname	,'..','commands');
 
@@ -21,16 +22,19 @@ const rest = new REST({ version: '9' }).setToken(token);
 	try {
 		console.log('Started refreshing application (/) commands.');
 
-		await rest.put(
-			Routes.applicationGuildCommands(clientId, guildId),
-			{ body: commands },
-		);
-		/** this is for all guilds only when commands are on production
-		await rest.put(
-			Routes.applicationCommands(clientId),
-			{ body: commands },
-		);
-		 */
+		if(myArgs[0] === 'true'){
+			console.log('Type of register: Global.');
+			await rest.put(
+				Routes.applicationCommands(clientId),
+				{ body: commands },
+			);
+		}
+		else{
+			console.log('Type of register: Local.');
+			await rest.put(
+				Routes.applicationGuildCommands(clientId, guildId),
+				{ body: commands },	);
+		}
 
 		console.log('Successfully reloaded application (/) commands.');
         
