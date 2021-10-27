@@ -1,17 +1,13 @@
-const Command = require('../../core/command.js');
-const {enviromentModel, sourceModel} = require('../../databases/manga/seeders/manga_manager');
+const SubCommand = require('../../core/subcommand.js');
+const { sourceModel,enviromentModel } = require('../../databases/manga/seeders/manga_manager.js');
+const { MessageEmbed } = require('discord.js');
 
 
-const select_source = new Command();
-select_source.setName('select-source');
-select_source.setDescription('Selects a default source for searches');
-select_source.setHasArgs(true);
-select_source.setUsage('command source-name');
-select_source.setCooldown(5);
+const select_source = new SubCommand();
+select_source.data.setName('select-source');
+select_source.data.setDescription('Selects a default source for searches');
 
-
-select_source.execute = async function(message,args)
-{
+select_source.execute = async interaction =>{
 
     const availableSources = await sourceModel.findAll();
     const exists = availableSources.some(element => {
@@ -34,5 +30,9 @@ select_source.execute = async function(message,args)
         message.author.send("Something went wrong, default source not changed!");
     else
         message.author.send("Default source changed!");
+
+
 }
+
 module.exports = select_source;
+

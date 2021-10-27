@@ -1,19 +1,14 @@
+const SubCommand = require('../../core/subcommand.js');
+const { sourceModel,enviromentModel, libraryModel, mangaModel} = require('../../databases/manga/seeders/manga_manager.js');
 const { MessageEmbed } = require('discord.js');
-const Command = require('../../core/command.js');
-const search = new Command();
-const {enviromentModel, sourceModel, libraryModel, mangaModel} = require('../../databases/manga/seeders/manga_manager');
 
 
-search.setName('search');
-search.setDescription('searches a manga with the default source');
-search.setHasArgs(true);
-search.setUsage('command manga-name');
-search.setCooldown(5);
+const search = new SubCommand();
+search.data.setName('search');
+search.data.setDescription('searches a manga with the default source');
 
+search.execute = async interaction =>{
 
-//upgrade the utlitie, the message collector primarly
-search.execute = async function(message,args)
-{
     const enviroment = await enviromentModel.findByPk(message.author.id);
     const default_source = await sourceModel.findByPk(enviroment.default_source);
    
@@ -65,5 +60,8 @@ search.execute = async function(message,args)
             }
         ).catch(error => console.log(error));
     }
+
 }
+
 module.exports = search;
+

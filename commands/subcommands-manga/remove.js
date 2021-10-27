@@ -1,18 +1,14 @@
-const Command = require('../../core/command.js');
+const SubCommand = require('../../core/subcommand.js');
 const { Op } = require("sequelize");
 const {libraryModel} = require('../../databases/manga/seeders/manga_manager');
 
 
-const remove = new Command();
-remove.setName('remove');
-remove.setDescription('Removes a manga from the library');
-remove.setHasArgs(true);
-remove.setUsage('command manga-name');
-remove.setCooldown(5);
+const remove = new SubCommand();
+remove.data.setName('remove');
+remove.data.setDescription('Removes a manga from the library');
 
+remove.execute = async interaction =>{
 
-remove.execute = async function(message,args)
-{
     const affectedRows = await libraryModel.destroy(
         {
             where:{
@@ -31,5 +27,8 @@ remove.execute = async function(message,args)
         message.author.send("Something went wrong, manga not removed!");
     else
         message.author.send("Manga removed from library!");
+
+
 }
+
 module.exports = remove;
