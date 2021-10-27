@@ -2,7 +2,7 @@ const Sequelize = require('sequelize');
 
 const sequelize = new Sequelize({
     dialect: 'sqlite',
-    storage: '../database/manga_module.db',
+    storage: './databases/manga/manga_module.db',
     logging: console.log
 });
 
