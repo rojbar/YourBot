@@ -1,6 +1,8 @@
 const SubCommand = require('../../core/subcommand.js');
 const {sourceModel, libraryModel, mangaModel} = require('../../databases/manga/seeders/manga_manager');
 const fs = require('fs');
+const enviroment = require('./helpers/enviroment.js');
+const {MessageEmbed} = require('discord.js');
 
 
 const read = new SubCommand();
@@ -8,16 +10,18 @@ read.data.setName('read');
 read.data.setDescription('Starts reading a manga that is in your library');
 
 read.execute = async interaction =>{
+
+    await enviroment(interaction.user.id);
     
     const manga_selected = await libraryModel.findOne(
         { where: 
          {manga_id: args[0],
-         user_id: message.author.id}
+         user_id: interaction.user.id}
          }    
      ).catch(error => console.log(error));
  
      if(manga_selected == null)
-         return message.channel.send("Manga not found!");  
+         return interaction.reply.send("Manga not found!");  
  
      const manga_info = await mangaModel.findByPk(manga_selected.manga_id);
      const manga_source = await sourceModel.findByPk(manga_info.source_id);
@@ -43,17 +47,18 @@ read.execute = async interaction =>{
          return message.channel.send("Chapter not found!");
          
      let htmlAnswer = await sourceScraper.generateChapterHTML(availableChapters[cap]);
-     fs.writeFile( `./${message.author.id}.html`, htmlAnswer, (error) => {console.log(error); });
+     fs.writeFile( `./${interaction.user.id}.html`, htmlAnswer, (error) => {console.log(error); });
  
      chapterToRead += 1;
-     let reply = new Discord.MessageEmbed().setTitle('Manga Chapter:').attachFiles([`${message.author.id}.html`]);   
+     let reply = new Discord.MessageEmbed().setTitle('Manga Chapter:').attachFiles([`${interaction.user.id}.html`]);   
      await libraryModel.update({last_chapter_read: chapterToRead },{
          where: {
              manga_id: args[0],
-             user_id: message.author.id,
+             user_id: interaction.user.id,
          }
      }).then().catch(error => console.log(error));
-     message.channel.send(reply);
+     
+     interaction.reply({embeds: [reply]});
 
 }
 
