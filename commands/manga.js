@@ -1,24 +1,14 @@
 const Command  = require('../core/command.js');
+const {sources} = require('../librarys/manga-scraping-tool/sources.js')
 
 const manga = new Command();
 
 manga.data.setName('manga')
-manga.data.setDescription('Soon we will send you your ping in ms!');
+manga.data.setDescription('It allows you to read manga!');
 
-manga.execute = async (interaction) => {
-		
-	interaction.reply('Login!');
+manga.loadSubcommands();
 
-	interaction.user.createDM().then(
-		DMChannel =>{
-			
-			DMChannel.send('Manga reader 1.0');
-			const filter = m => m.content.includes('discord');
-			DMChannel.send('bye');
-
-		}
-	);
-};
+manga.sources = sources;
 
 module.exports = manga;
 

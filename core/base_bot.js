@@ -15,13 +15,11 @@ class Base_Bot extends Discord.Client {
 	/**
 	 * @constructs
      * @param {string} prefix the prefix for the bot commands
-     * @param {string} token the token of the bot for login
 	 * @param {Discord.Intents} intents the options passed to the bot, is Intents.FLAGS.GUILDS by default
      */
-	constructor(prefix,token, intents = {intents: [Discord.Intents.FLAGS.GUILDS]}){
+	constructor(prefix, intents = {intents: [Discord.Intents.FLAGS.GUILDS]}){
 		super(intents);
 		this.prefix = prefix;
-		this.token = token;
 		this.commands = new Discord.Collection(); 
 	}
 
@@ -34,7 +32,7 @@ class Base_Bot extends Discord.Client {
 	{
 		this.loadCommands();
 		this.loadEvents();
-		this.login(this.token);
+		this.login(process.env.DISCORD_TOKEN);
 	}
 
 	/**

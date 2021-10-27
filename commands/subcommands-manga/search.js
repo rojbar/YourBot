@@ -1,37 +1,40 @@
+const SubCommand = require('../../core/subcommand.js');
+const { sourceModel,enviromentModel, libraryModel, mangaModel} = require('../../databases/manga/seeders/manga_manager.js');
 const { MessageEmbed } = require('discord.js');
-const Command = require('../../core/command.js');
-const search = new Command();
-const {enviromentModel, sourceModel, libraryModel, mangaModel} = require('../../databases/manga/seeders/manga_manager');
+const env = require('./helpers/enviroment.js');
 
 
-search.setName('search');
-search.setDescription('searches a manga with the default source');
-search.setHasArgs(true);
-search.setUsage('command manga-name');
-search.setCooldown(5);
+const search = new SubCommand();
+search.data.setName('search');
+search.data.setDescription('searches a manga with the default source');
+search.data.addStringOption(      
+    option => 
+        option.setName('name')
+          .setDescription('The name of the manga')
+          .setRequired(true)
+);
 
+search.execute = async interaction =>{
 
-//upgrade the utlitie, the message collector primarly
-search.execute = async function(message,args)
-{
-    const enviroment = await enviromentModel.findByPk(message.author.id);
+    await env(interaction.user.id);
+
+    const enviroment = await enviromentModel.findByPk(interaction.user.id);
     const default_source = await sourceModel.findByPk(enviroment.default_source);
    
 
-    if(args.sources.has(default_source.name))
+    if(interaction.client.commands.get(interaction.commandName).sources.has(default_source.name))
     {
-        const sourceScraper = args.sources.get(default_source.name);
+        const sourceScraper = interaction.client.commands.get(interaction.commandName).sources.get(default_source.name);
 
-        const busquedaFormateada = sourceScraper.formatSearch(args);
-        const resultados = await sourceScraper.search(sourceScraper.getSearchUrl().concat(busquedaFormateada));
+        const resultados = await sourceScraper.search(sourceScraper.getSearchUrl().concat(interaction.options.getString('name')));
 
         const reply = new MessageEmbed().setTitle('Search Results:');
         resultados.forEach( function(element, index){
             reply.addField(`${index+1}. ${element.name} | Status: ${element.state}`, `${element.author} \n ${element.last_chapter}`, false);
         }); 
-        message.channel.send(reply);
+        interaction.reply(reply);
 
-        message.channel.awaitMessages( m => !m.author.bot,{max: 1}).then(
+        interaction.channel.awaitMessages( m => !m.author.bot,{max: 1}).then(
            async resultado => 
             {
                 let optionSelected =parseInt( resultado.first().content);
@@ -55,15 +58,18 @@ search.execute = async function(message,args)
                     await libraryModel.create(
                         {
                             manga_id: mangaResult[0].manga_id ,
-                            user_id: message.author.id,
+                            user_id: interaction.user.id,
                             last_chapter_read: 0,
-                        }).then( message.channel.send("Manga added to the library!"));
+                        }).then( interaction.reply("Manga added to the library!"));
                 }
                 else{
-                    message.channel.send('Operation canceled');
+                    interaction.reply('Operation canceled');
                 }
             }
         ).catch(error => console.log(error));
     }
+
 }
+
 module.exports = search;
+

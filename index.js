@@ -1,8 +1,12 @@
 const Base_Bot = require("./core/base_bot");
-const {prefix, token} = require('./config.json');
+const {prefix} = require('./config.json');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 
-const bot = new Base_Bot(prefix, token);
+
+const bot = new Base_Bot(prefix);
 bot.start();
 
 

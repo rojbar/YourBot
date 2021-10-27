@@ -1,9 +1,11 @@
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
-const { clientId, guildId, token } = require('../config.json');
 const fs = require('fs');
 const path = require('path');
+const dotenv = require('dotenv');
+dotenv.config();
 
+let  myArgs = process.argv.slice(2);
 const commands = [];
 const dirpath = path.join(__dirname	,'..','commands');
 
@@ -15,22 +17,25 @@ for (const file of commandFiles) {
 	commands.push(command.data.toJSON());
 }
 
-const rest = new REST({ version: '9' }).setToken(token);
+const rest = new REST({ version: '9' }).setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
 	try {
 		console.log('Started refreshing application (/) commands.');
 
-		await rest.put(
-			Routes.applicationGuildCommands(clientId, guildId),
-			{ body: commands },
-		);
-		/** this is for all guilds only when commands are on production
-		await rest.put(
-			Routes.applicationCommands(clientId),
-			{ body: commands },
-		);
-		 */
+		if(myArgs[0] === 'true'){
+			console.log('Type of register: Global.');
+			await rest.put(
+				Routes.applicationCommands(process.env.CLIENTID),
+				{ body: commands },
+			);
+		}
+		else{
+			console.log('Type of register: Local.');
+			await rest.put(
+				Routes.applicationGuildCommands(process.env.CLIENTID, process.env.GUILDID),
+				{ body: commands },	);
+		}
 
 		console.log('Successfully reloaded application (/) commands.');
         
@@ -39,3 +44,4 @@ const rest = new REST({ version: '9' }).setToken(token);
 	}
 
 })();
+ 
