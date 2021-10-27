@@ -11,7 +11,7 @@ read.data.setDescription('Starts reading a manga that is in your library');
 read.data.addStringOption(      
     option => 
         option.setName('manga_id')
-          .setDescription('The name of the manga')
+          .setDescription('The id of the manga')
           .setRequired(true)
 );
 read.data.addIntegerOption(      
