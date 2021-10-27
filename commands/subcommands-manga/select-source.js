@@ -1,35 +1,43 @@
 const SubCommand = require('../../core/subcommand.js');
 const { sourceModel,enviromentModel } = require('../../databases/manga/seeders/manga_manager.js');
-const { MessageEmbed } = require('discord.js');
-
+const enviroment = require('./helpers/enviroment.js');
 
 const select_source = new SubCommand();
 select_source.data.setName('select-source');
 select_source.data.setDescription('Selects a default source for searches');
+select_source.data.addIntegerOption(      
+    option => 
+        option.setName('source_id')
+          .setDescription('The number of the source show in the list-sources')
+          .setRequired(true)
+
+);
 
 select_source.execute = async interaction =>{
 
+    await enviroment(interaction.user.id);
+
     const availableSources = await sourceModel.findAll();
     const exists = availableSources.some(element => {
-        return element.source_id === parseInt(args[0]);
+        return element.source_id === interaction.options.getInteger('source_id');
     });
-    if(!exists) return message.channel.send('Invalid source!');
+    if(!exists) return interaction.reply('Invalid source!');
 
     const affectedRows = await enviromentModel.update(
         {
-            default_source: args[0],
+            default_source: interaction.options.getInteger('source_id'),
         },
         {
             where:{
-                user_id: message.author.id
+                user_id: interaction.user.id
             }
         }
     );
 
     if(affectedRows[0] === 0)
-        message.author.send("Something went wrong, default source not changed!");
+        interaction.reply("Something went wrong, default source not changed!");
     else
-        message.author.send("Default source changed!");
+        interaction.reply("Default source changed!");
 
 
 }
