@@ -7,7 +7,7 @@ const enviroment = require('./helpers/enviroment.js');
 const search = new SubCommand();
 search.data.setName('search');
 search.data.setDescription('searches a manga with the default source');
-read.data.addStringOption(      
+search.data.addStringOption(      
     option => 
         option.setName('manga_id')
           .setDescription('The name of the manga')
