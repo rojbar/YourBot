@@ -18,7 +18,7 @@ read.data.addIntegerOption(
     option => 
         option.setName('chapter')
           .setDescription('The number of the chapter you want to read')
-          .setRequired(true)
+          .setRequired(false)
 );
 
 read.execute = async interaction =>{
@@ -35,7 +35,7 @@ read.execute = async interaction =>{
     ).catch(error => console.log(error));
  
     if(manga_selected == null)
-        return interaction.reply.send("Manga not found!");  
+        return interaction.reply("Manga not found!");  
  
     const manga_info = await mangaModel.findByPk(manga_selected.manga_id);
     const manga_source = await sourceModel.findByPk(manga_info.source_id);
@@ -61,7 +61,7 @@ read.execute = async interaction =>{
     console.log("the chapter selected is: "+cap);   
 
     if (cap >= availableChapters.length || cap < 0)
-        return message.channel.send("Chapter not found!");
+        return interaction.reply("Chapter not found!");
         
     let htmlAnswer = await sourceScraper.generateChapterHTML(availableChapters[cap]);
     fs.writeFile( `./${interaction.user.id}.html`, htmlAnswer, (error) => {console.log(error); });
