@@ -12,6 +12,4 @@ const mangaModel = require('../models/manga')(sequelize, Sequelize.DataTypes);
 const enviromentModel = require('../models/enviroment')(sequelize, Sequelize.DataTypes);
 const libraryModel = require('../models/library')(sequelize, Sequelize.DataTypes);
 
-
-console.log("Manga Module Database ready!");
 module.exports = {sequelize, sourceModel, mangaModel, enviromentModel,libraryModel};
