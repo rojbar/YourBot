@@ -1,3 +1,4 @@
+/** 
 const Source_base = require('./source_base.js');
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
@@ -78,3 +79,5 @@ mangaTMO.generateChapterHTML = async function(input)
 
 }
 module.exports = mangaTMO;
+
+*/

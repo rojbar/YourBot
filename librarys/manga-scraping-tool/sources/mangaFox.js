@@ -1,5 +1,7 @@
 //manga fox requires a headless browser or an api that executes javascript code
-const Source_base = require('./source_base.js');
+
+/** 
+const Source_base = require('../source_base.js');
 const mangaFox = new Source_base();
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
@@ -30,3 +32,5 @@ mangaFox.search = async function(input)
     return resultadosMangas;
 }
 module.exports = mangaFox;
+
+*/

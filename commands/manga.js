@@ -1,4 +1,5 @@
 const Command  = require('../core/command.js');
+const {sources} = require('../librarys/manga-scraping-tool/sources.js')
 
 const manga = new Command();
 
@@ -7,7 +8,7 @@ manga.data.setDescription('It allows you to read manga!');
 
 manga.loadSubcommands();
 
-manga.sources = ["here we load all the manga sources in a collection where (name_source, source)"];
+manga.sources = sources;
 
 module.exports = manga;
 
