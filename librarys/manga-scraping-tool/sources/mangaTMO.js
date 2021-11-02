@@ -1,9 +1,4 @@
 const Source_base = require('../source_base.js');
-const puppeteer = require('puppeteer-extra');
-const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-puppeteer.use(StealthPlugin());
-const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker');
-puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
 
 const mangaTMO = new Source_base();
 mangaTMO.setBaseURl('https://lectortmo.com/');
@@ -18,9 +13,8 @@ mangaTMO.setName('TuMangaOnline');
  * Returns an array of manga objects each manga  containes a name, state, author, last_chapter, chapterURL} 
  * @param {String} input nombre del manga a buscar 
  */
-mangaTMO.search = async function(input)
+mangaTMO.search = async function(input, browser)
 {
-        const  hola = await puppeteer.launch({ headless: false }).then(async browser => {
         const page = await browser.newPage();
       
         await page.goto(input).catch((error) => {
@@ -48,12 +42,10 @@ mangaTMO.search = async function(input)
             return resultadosMangas;
         });
 
-        await browser.close();
-
+        page.close();
         return resultados;
-    });
+  
 
-    return hola;
 }
 
 
