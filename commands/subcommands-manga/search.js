@@ -34,20 +34,22 @@ search.execute = async interaction =>{
 
     const input = sourceScraper.formatSearch(interaction.options.getString('name').split(" "));
 
-    const resultados = await sourceScraper.search(sourceScraper.getSearchUrl().concat(input));
+    const resultados = await sourceScraper.search(sourceScraper.getSearchUrl().concat(input), interaction.client.browser);
 
     const reply = new MessageEmbed().setTitle('Search Results:').setDescription('Select a manga to add');
 
     const menuOptions = [];
     resultados.forEach( function(element, index){
         menuOptions.push({
-            label: `${element.name}`,
+            label: `${element.name.slice(0,99)}`,
             description: ` `,
             value: `${index}`
         });
     });
 
-    
+    console.log(menuOptions.length);
+    console.log(menuOptions);
+
     const row = new MessageActionRow() 
 			.addComponents(
                 new MessageSelectMenu().setCustomId('selectManga')
