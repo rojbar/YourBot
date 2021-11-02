@@ -99,6 +99,4 @@ mangaTMO.generateChapterHTML = async function(input)
     return mangaChapter ;
 
 }
-
-//mangaTMO.search('https://lectortmo.com/library?_pg=1&title=grand');
 module.exports = mangaTMO;

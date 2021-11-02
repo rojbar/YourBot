@@ -32,7 +32,9 @@ search.execute = async interaction =>{
     
     const sourceScraper = interaction.client.commands.get(interaction.commandName).sources.get(default_source.name);
 
-    const resultados = await sourceScraper.search(sourceScraper.getSearchUrl().concat(interaction.options.getString('name')));
+    const input = sourceScraper.formatSearch(interaction.options.getString('name').split(" "));
+
+    const resultados = await sourceScraper.search(sourceScraper.getSearchUrl().concat(input));
 
     const reply = new MessageEmbed().setTitle('Search Results:').setDescription('Select a manga to add');
 
