@@ -50,7 +50,7 @@ class Command {
         } catch (error) {
     
             console.error(error);
-            await interaction.reply({ content: 'There was an error while executing this subcommand!', ephemeral: true });
+            //await interaction.reply({ content: 'There was an error while executing this subcommand!', ephemeral: true });
         }    
     }
 
