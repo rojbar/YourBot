@@ -1,37 +1,50 @@
-/** 
-const Source_base = require('./source_base.js');
-const fetch = require('node-fetch');
-const cheerio = require('cheerio');
-
+const Source_base = require('../source_base.js');
 
 const mangaTMO = new Source_base();
 mangaTMO.setBaseURl('https://lectortmo.com/');
-mangaTMO.setSearchUrl('https://lectortmo.com/library?_page=1&title=');
-mangaTMO.setChapterUrl('http://fanfox.net/manga/');
+mangaTMO.setSearchUrl('https://lectortmo.com/library?_pg=1&title=');
+mangaTMO.setChapterUrl('https://lectortmo.com/library/manga/');
 mangaTMO.setItemSeparating('+');
-mangaTMO.setViewerUrl('http://fanfox.net/manga/');
+mangaTMO.setViewerUrl('https://lectortmo.com/viewer/');
 mangaTMO.setName('TuMangaOnline');
 
 
-mangaTMO.search = async function(input)
+/**
+ * Returns an array of manga objects each manga  containes a name, state, author, last_chapter, chapterURL} 
+ * @param {String} input nombre del manga a buscar 
+ */
+mangaTMO.search = async function(input, browser)
 {
-    const res = await fetch(input);
-    const body = await res.text();
-    const $ = await cheerio.load(body);
+        const page = await browser.newPage();
+      
+        await page.goto(input).catch((error) => {
+            console.error("La pagina demoro mucho en cargar", error);
+        });
 
-    const resultadosMangas = [];
-    const resultados = $('.element');
-    resultados.each(function(i,e)
-    {
-        resultadosMangas[i] = {
-            name: $(this).children().first().children().first().children().eq(1).children().first().attr("title"),
-            state: "Unknown",
-            author: "Author: Unknown",
-            last_chapter: "Last chapter: Unknown",
-            chapterURL: $(this).children().first().attr("href"),
-        };
-    });
-    return resultadosMangas;
+        await page.waitForSelector('div[data-identifier]').catch((error) => {
+            console.error("El selector no aparecio", error);
+        });
+     
+        
+        const resultados = await page.$$eval('div[data-identifier]',  res => {
+           
+            const resultadosMangas = [];
+            res.forEach(element => {
+                resultadosMangas.push( {
+                   name: element.querySelector('a > div > div[class=thumbnail-title] > h4 ').textContent,
+                   state:"Unknown",
+                   author: "Author: Unknown",
+                   last_chapter: "Last chapter: Unknown",
+                   chapterURL:element.querySelector('a').href,
+                }); 
+            });
+           
+            return resultadosMangas;
+        });
+
+        page.close();
+        return resultados;
+  
 
 }
 
@@ -79,5 +92,3 @@ mangaTMO.generateChapterHTML = async function(input)
 
 }
 module.exports = mangaTMO;
-
-*/
