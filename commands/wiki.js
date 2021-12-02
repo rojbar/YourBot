@@ -18,7 +18,7 @@ help.execute = async (interaction) =>{
 
 	await interaction.deferReply();
 
-	axios.get(`https://en.wikipedia.org/wiki/${interaction.options.getString('query').trim().replace('/ /g', '_')}`).then(
+	axios.get(`https://en.wikipedia.org/wiki/${interaction.options.getString('query').trim().replace(/ /g, '_')}`).then(
 		res =>{
 			const $ = cheerio.load(res.data);
 	
@@ -35,7 +35,7 @@ help.execute = async (interaction) =>{
 			}
 			else{
 				a = resp.slice(0,800);
-				a = `${a}... [continue here](https://en.wikipedia.org/wiki/${interaction.options.getString('query').trim().replace('/ /g', '_')})`;
+				a = `${a}... [continue here](https://en.wikipedia.org/wiki/${interaction.options.getString('query').trim().replace(/ /g, '_')})`;
 				reply.addField(`${interaction.options.getString('query')}`.toUpperCase(), a, true);
 			
 				if(typeof image !== undefined)
