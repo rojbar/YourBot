@@ -5,7 +5,7 @@ Discord bot that has:
 - Chess
 - Wiki
 # Deployment
-Is required a .env.json file that has the DISCORD_TOKEN, TOKENID, and GUILDID
+Is required a .env file that has the DISCORD_TOKEN, TOKENID, and GUILDID
 # Docs
 jsdoc -c conf.json
 
