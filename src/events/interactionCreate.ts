@@ -1,6 +1,7 @@
-const Event = require('../core/event.js');
+import { Interaction } from "discord.js";
+import Event from "../core/event";
 
-const exec = async interaction => {
+const exec = async (interaction: Interaction) => {
 
     if (!interaction.isCommand())
         return;
